@@ -8,8 +8,8 @@ create script .sh file
 
 sudo apt-get update -y
 sudo apt install nginx -y
-sudo service start nginx 
-sudo service enable nginx 
+sudo service nginx start 
+sudo service nginx enable 
 
 echo "<h1> welcome to terraform world!!! </h1>"  > /var/www/html/index.html
 -----------------------
