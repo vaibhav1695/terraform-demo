@@ -1,0 +1,56 @@
+
+#create default VPC
+
+resource "aws_default_vpc" "default" {
+
+}
+
+# create security group 
+
+resource "aws_security_group" "my_sg" {
+  name        = "ec2-sg"
+  description = "ec2 security group for ssh and http"
+  vpc_id      = aws_default_vpc.default.id
+
+
+  # inbound traffice 
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+
+  }
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+
+  }
+
+  # outbound traffice
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "ec2-sg"
+  }
+
+}
+
+
+# create EC2 instance 
+
+resource "aws_instance" "web-server" {
+  instance_type   = "t2.micro"
+  ami             = "ami-08b5b3a93ed654d19" # ubuntu 
+  security_groups = ["aws_security_group.my_sg.name"]
+
+}
