@@ -1,36 +1,33 @@
 
-#create default VPC
+# create default vpc
 
 resource "aws_default_vpc" "default" {
-
+  tags = {
+    Name = "Default VPC"
+  }
 }
 
-# create security group 
+#create Security group 
 
-resource "aws_security_group" "my_sg" {
-  name        = "ec2-sg"
-  description = "ec2 security group for ssh and http"
+resource "aws_security_group" "my-sg" {
+  name        = "my-sg"
+  description = "Allow TLS inbound traffic and all outbound traffic"
   vpc_id      = aws_default_vpc.default.id
 
-
-  # inbound traffice 
 
   ingress {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-
   }
+
   ingress {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-
   }
-
-  # outbound traffice
 
   egress {
     from_port   = 0
@@ -40,17 +37,27 @@ resource "aws_security_group" "my_sg" {
   }
 
   tags = {
-    Name = "ec2-sg"
+    Name = "my-sg"
   }
-
 }
 
 
-# create EC2 instance 
+#aws instance 
+resource "aws_instance" "example" {
+  ami           = var.ec2_instance_ami             # Update this to the correct AMI ID
+  instance_type = var.aws_instance_type            # Use your preferred instance type
 
-resource "aws_instance" "web-server" {
-  instance_type   = "t2.micro"
-  ami             = "ami-08b5b3a93ed654d19" # ubuntu 
-  security_groups = ["aws_security_group.my_sg.name"]
+  vpc_security_group_ids = [aws_security_group.my-sg.id]
+
+
+  root_block_device {
+    volume_size = var.ec2_volume_size
+    volume_type = "gp3"
+  }
+
+  tags = {
+    Name = "web-server"
+
+  }
 
 }
