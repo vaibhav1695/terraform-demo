@@ -24,7 +24,7 @@ meta Argument using : Count  and for_each  :-
 Using Meta Argument  # count :-
 count = 3   
 
---------------------------Outputs.tf  -->----------------------------- 
+OUTPUT - File :-
 output "aws_ec2_public_ip" {
         value = aws_instance.my-instance[*].public_ip
 }
@@ -35,7 +35,6 @@ output "aws_root_size" {
         value = aws_instance.my-instance[*].root_block_device[*]
 }
 
------------------------
 
 using meta argument # for_each :-
 
@@ -43,7 +42,8 @@ using meta argument # for_each :-
         vaibhav_micro = "t2.micro"
         vishal_micro = "t2.micro"
 })
-----------------OUTPUT----------------------------------------
+
+OUTPUT FiLE :---
 output "aws_ec2_public_ip" {
   value = [
     for ip  in aws_instance.my-instance  : ip.public_ip
