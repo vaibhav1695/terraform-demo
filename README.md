@@ -35,7 +35,7 @@ output "aws_root_size" {
         value = aws_instance.my-instance[*].root_block_device[*]
 }
 
------------------------=======================
+-----------------------
 
 using meta argument # for_each :-
 
@@ -50,4 +50,4 @@ output "aws_ec2_public_ip" {
   ]
 }
 ubuntu@ip-1
-======================================================================
+
