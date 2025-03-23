@@ -37,8 +37,8 @@ output "aws_root_size" {
 
 
 using meta argument # for_each :-
-
-  for_each = ({
+ 
+  for_each = tomap({
         vaibhav_micro = "t2.micro"
         vishal_micro = "t2.micro"
 })
